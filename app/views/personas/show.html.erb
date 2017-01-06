@@ -1,0 +1,38 @@
+<h1>Hello <%= @persona.name %>!</h1>
+
+<%= form_tag("/personas/#{@persona.id}", method: 'DELETE') do %>
+  <%= submit_tag 'Persona Sign out' %>
+<% end %>
+
+<br><br><br>
+
+<h3>Products</h3>
+<% if @persona.products.count > 0 %>
+  <% @persona.products.each do |product| %>
+  <p><%= product.name %></p>
+  <% end %>
+<% end %>
+
+
+<%= link_to 'Create Product', new_product_path %>
+
+<br><br>
+
+<h3>Place Order</h3>
+<%= form_tag '/orders/new', method: :post, class: "navbar-form navbar-left search-form" do %>
+  <%= label_tag 'Product Name' %>
+  <br>
+  <%= text_field_tag 'order[name]'%>
+  <br><br>
+  <%= submit_tag 'Place order' %>
+<% end %>
+
+<h3>Current Stock</h3>
+<% if @persona.products.count > 0 %>
+  <% @persona.products.each do |product| %>
+  <p><%= product.name %></p>
+    <ul>
+      <li>product.distribution_centers.first.quantity</li>
+    </ul>
+  <% end %>
+<% end %>

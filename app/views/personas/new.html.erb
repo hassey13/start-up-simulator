@@ -1,0 +1,18 @@
+<h1>Create Persona</h1>
+<%= form_for @persona do |f| %>
+  <%= f.label :name %>
+  <br>
+  <%= f.text_field :name %>
+  <br><br>
+  <%= f.submit "Create Persona" %>
+<% end %>
+<br><br>
+
+<h1>Sign in:</h1>
+<%= form_tag '/personas', method: :post do %>
+<%= label_tag 'Persona Name' %>
+<br>
+<%= text_field_tag 'persona_login[name]' %>
+<br><br>
+<%= submit_tag 'Log in' %>
+<% end %>
