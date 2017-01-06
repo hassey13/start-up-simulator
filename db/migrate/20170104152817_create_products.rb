@@ -5,7 +5,6 @@ class CreateProducts < ActiveRecord::Migration[5.0]
       t.string :category
       t.integer :persona_id
       t.integer :sell_price
-      t.integer :demand
       t.text :picture
       t.boolean :active
       t.integer :date_created
