@@ -1,4 +1,9 @@
 class PersonasController < ApplicationController
+  before_action :require_login
+
+  def index
+    @personas = current_user.personas
+  end
 
   def new
     @persona = Persona.new
@@ -19,8 +24,9 @@ class PersonasController < ApplicationController
       ##Attempt Registration
       @persona = Persona.new(persona_params)
         @persona.money = 10000
-        @persona.user_id = 1
+        @persona.user_id = current_user.id
         @persona.save
+      Factory.add_default_factories(@persona.id)
     end
     session[:persona_id] = @persona.id
     redirect_to @persona
@@ -31,12 +37,13 @@ class PersonasController < ApplicationController
     if session[:persona_id].blank?
       redirect_to new_persona_path and return
     end
-    @persona = Persona.find(session[:persona_id])
+    @persona = current_persona
   end
 
   def destroy
+    current_persona.destroy
     session[:persona_id] = nil
-    redirect_to new_persona_path
+    redirect_to personas_path
   end
 
   private

@@ -1,0 +1,21 @@
+<h1>Welcome <%= current_user.first_name %>!</h1>
+<br>
+<%= link_to "View Personas", new_persona_path %>
+<br>
+<h3>Stats</h3>
+
+<br><br><br>
+
+<h3>Achievements</h3>
+
+<br><br><br>
+
+<%= form_tag logout_path, method: :delete do %>
+  <%= submit_tag "Logout" %>
+<% end %>
+
+<br><br><br>
+
+<%= form_tag delete_user_path, method: :delete do %>
+  <%= submit_tag "Delete Account" %>
+<% end %>

@@ -1,0 +1,61 @@
+<div style="width: 100%; height: 50px;">
+<% if !!current_user %>
+  <h3>Logged in as: <%= current_user.first_name %></h3>
+  <%= form_tag logout_path, method: :delete do %>
+    <%= submit_tag "Logout" %>
+  <% end %>
+<% else %>
+  <h3>You are not logged in.</h3>
+<% end %>
+</div>
+
+<% if flash[:notice] %>
+  <div class="flash">
+    <p><%= flash[:notice] %></p>
+  </div>
+<% end %>
+
+<h1>Create an account:</h1>
+
+<%= form_for @user do |f| %>
+
+  <%= f.label :user_name %>
+  <br>
+  <%= f.text_field :user_name %>
+  <br><br>
+  <%= f.label :password %>
+  <br>
+  <%= f.text_field :password %>
+  <br><br>
+  <%= f.label :password_confirmation %>
+  <br>
+  <%= f.text_field :password_confirmation %>
+  <br><br>
+  <%= f.label :first_name %>
+  <br>
+  <%= f.text_field :first_name %>
+  <br><br>
+  <%= f.label :last_name %>
+  <br>
+  <%= f.text_field :last_name %>
+  <br><br>
+  <%= f.label :email %>
+  <br>
+  <%= f.text_field :email %>
+  <br><br>
+  <%= f.submit "Create User" %>
+<% end %>
+
+<h1>Sign in:</h1>
+<%= form_tag '/sessions', method: :post do %>
+
+<%= label_tag 'Username' %>
+<br>
+<%= text_field_tag :user_name %>
+<br><br>
+<%= label_tag 'Password' %>
+<br>
+<%= text_field_tag :password %>
+<br><br>
+<%= submit_tag 'Log in' %>
+<% end %>

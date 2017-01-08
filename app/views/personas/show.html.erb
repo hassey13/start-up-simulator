@@ -1,38 +1,73 @@
-<h1>Hello <%= @persona.name %>!</h1>
 
-<%= form_tag("/personas/#{@persona.id}", method: 'DELETE') do %>
+  <h3>Logged in as: <%= current_user.first_name %></h3>
+
+  <%= form_tag logout_path, method: :delete do %>
+    <%= submit_tag "Logout" %>
+  <% end %>
+
+<% if flash[:notice] %>
+  <div class="flash">
+    <p><%= flash[:notice] %></p>
+  </div>
+<% end %>
+
+<br>
+
+<h1>Hello <%= @persona.name %>!</h1>
+<h3>Money: $<%= number_with_delimiter(current_persona.money, :delimiter => ',')%></h3>
+
+<%= form_tag(logout_persona_path, method: 'DELETE') do %>
   <%= submit_tag 'Persona Sign out' %>
 <% end %>
 
 <br><br><br>
 
-<h3>Products</h3>
-<% if @persona.products.count > 0 %>
-  <% @persona.products.each do |product| %>
-  <p><%= product.name %></p>
-  <% end %>
+<%= form_tag(delete_persona_path, method: 'DELETE') do %>
+  <%= submit_tag 'Delete Persona' %>
 <% end %>
 
+<br><br><br>
+
+<h3>Products</h3>
+  <% if @persona.products.count > 0 %>
+    <% @persona.products.each do |product| %>
+    <p><%= product.name %></p>
+    <% end %>
+  <% end %>
 
 <%= link_to 'Create Product', new_product_path %>
 
 <br><br>
 
 <h3>Place Order</h3>
-<%= form_tag '/orders/new', method: :post, class: "navbar-form navbar-left search-form" do %>
-  <%= label_tag 'Product Name' %>
-  <br>
-  <%= text_field_tag 'order[name]'%>
-  <br><br>
-  <%= submit_tag 'Place order' %>
-<% end %>
+  <%= form_tag '/orders/new', method: :post, class: "navbar-form navbar-left search-form" do %>
+    <%= label_tag 'Product Name' %>
+    <br>
+    <%= text_field_tag 'order[name]'%>
+    <br><br>
+    <%= submit_tag 'Place order' %>
+  <% end %>
+
+<h3>Available Factories</h3>
+  <%= link_to "Unlock Factories", new_factory_path %>
+  <ul>
+    <% @persona.factories.each do |factory| %>
+        <%  if factory.availability %>
+          <p><%= link_to factory.name, factory %></p>
+        <% end %>
+    <% end %>
+  </ul>
 
 <h3>Current Stock</h3>
-<% if @persona.products.count > 0 %>
-  <% @persona.products.each do |product| %>
-  <p><%= product.name %></p>
-    <ul>
-      <li>product.distribution_centers.first.quantity</li>
-    </ul>
+  <% if @persona.products.count > 0 %>
+    <% @persona.products.each do |product| %>
+    <p><%= product.name %></p>
+      <ul>
+        <% unless product.distribution_centers.blank? %>
+          <li><%= product.distribution_centers.first.quantity %></li>
+        <% else %>
+          <li>You have no distribution centers for this product. <%= link_to "Create", new_distribution_center_path %> one!</li>
+        <% end %>
+      </ul>
+    <% end %>
   <% end %>
-<% end %>

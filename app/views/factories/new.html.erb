@@ -1,0 +1,25 @@
+<h1>Current Funds: $<%= number_with_delimiter(current_persona.money, :delimiter => ',') %></h1>
+<br>
+<h1>Current Unlocked Factories</h1>
+  <ul>
+    <% current_persona.factories.each do |factory| %>
+        <%  if factory.availability %>
+          <p><%= factory.name %></p>
+        <% end %>
+    <% end %>
+  </ul>
+
+<h1>Factories Available for Purchase</h1>
+  <ul>
+    <% current_persona.factories.each do |factory| %>
+        <%  unless factory.availability %>
+          <p><%= "#{factory.name}" %></p>
+          <p><%= "Cost: $#{number_with_delimiter(factory.cost, :delimiter => ',')}" %></p>
+          <%= form_tag factories_path, method: :post do %>
+            <%= hidden_field_tag 'factory', "#{factory.id}" %>
+            <%= submit_tag "Unlock #{factory.name}" %>
+          <% end %>
+          <br>
+        <% end %>
+    <% end %>
+  </ul>
