@@ -23,7 +23,7 @@ class PersonasController < ApplicationController
     else
       ##Attempt Registration
       @persona = Persona.new(persona_params)
-        @persona.money = 10000
+        @persona.money = 20000
         @persona.user_id = current_user.id
         @persona.save
       Factory.add_default_factories(@persona.id)

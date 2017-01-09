@@ -1,0 +1,44 @@
+<p>Logged in as: <%= current_user.first_name %> <%= form_tag logout_path, method: :delete do %>
+    <%= submit_tag "Logout" %>
+  <% end %></p>
+
+<% if flash[:notice] %>
+<div class="flash">
+  <p><%= flash[:notice] %></p>
+</div>
+<% end %>
+
+<br>
+
+<%= link_to "Back to Persona", current_persona %>
+
+<br>
+
+<h1><%= @distribution_center.name %></h1>
+
+<br>
+
+<h3>Products Stocked</h3>
+  <% unless @distribution_center.product_distribution_centers.blank? %>
+  <ul>
+    <% @distribution_center.product_distribution_centers.each do |pdc| %>
+      <li><%= "#{Product.find(pdc.product_id).name} - Qty: #{pdc.quantity}"  %></li>
+    <% end %>
+  </ul>
+  <% else %>
+    <p>There are no products in this Distribution Center.</p>
+  <% end %>
+
+
+<br><br>
+
+<h3>Stock New Product</h3>
+
+<%= form_tag(stock_product_path, method: 'POST') do %>
+
+  <%=  select("product", "name", current_persona.products.collect {|p| p.name}, {include_blank: false}) %>
+
+  <br><br>
+
+  <%= submit_tag 'Submit' %>
+<% end %>

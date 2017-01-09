@@ -1,17 +1,12 @@
-
-  <h3>Logged in as: <%= current_user.first_name %></h3>
-
-  <%= form_tag logout_path, method: :delete do %>
-    <%= submit_tag "Logout" %>
-  <% end %>
+<p>Logged in as: <%= current_user.first_name %> <%= form_tag logout_path, method: :delete do %>
+      <%= submit_tag "Logout" %>
+    <% end %></p>
 
 <% if flash[:notice] %>
   <div class="flash">
     <p><%= flash[:notice] %></p>
   </div>
 <% end %>
-
-<br>
 
 <h1>Hello <%= @persona.name %>!</h1>
 <h3>Money: $<%= number_with_delimiter(current_persona.money, :delimiter => ',')%></h3>
@@ -20,18 +15,18 @@
   <%= submit_tag 'Persona Sign out' %>
 <% end %>
 
-<br><br><br>
+<br>
 
 <%= form_tag(delete_persona_path, method: 'DELETE') do %>
   <%= submit_tag 'Delete Persona' %>
 <% end %>
 
-<br><br><br>
+<br>
 
 <h3>Products</h3>
   <% if @persona.products.count > 0 %>
     <% @persona.products.each do |product| %>
-    <p><%= product.name %></p>
+    <p><%= product.name %> - Cost: $<%= (product.sell_price)/4 %></p>
     <% end %>
   <% end %>
 
@@ -41,11 +36,20 @@
 
 <h3>Place Order</h3>
   <%= form_tag '/orders/new', method: :post, class: "navbar-form navbar-left search-form" do %>
-    <%= label_tag 'Product Name' %>
+    <%= label_tag 'Select Product' %>
     <br>
-    <%= text_field_tag 'order[name]'%>
+    <%=  select("order", "name", current_persona.products.collect {|p| p.name}, {include_blank: true}) %>
+    <br><br>
+    <%= label_tag 'Quantity' %>
+    <br>
+    <%= text_field_tag 'order[quantity]'%>
+    <br><br>
+    <%= label_tag 'Select Factory' %>
+    <br>
+    <%=  select("order", "factory", current_persona.factories.collect {|f| f.name if f.availability}.compact, {include_blank: false}) %>
     <br><br>
     <%= submit_tag 'Place order' %>
+
   <% end %>
 
 <h3>Available Factories</h3>
@@ -59,15 +63,21 @@
   </ul>
 
 <h3>Current Stock</h3>
-  <% if @persona.products.count > 0 %>
-    <% @persona.products.each do |product| %>
-    <p><%= product.name %></p>
+
+  <% unless current_persona.distribution_centers.blank? %>
+    <% current_persona.distribution_centers.each do |dc| %>
+      <p><%= link_to "#{dc.name}", dc %></p>
+      <% unless dc.product_distribution_centers.blank? %>
       <ul>
-        <% unless product.distribution_centers.blank? %>
-          <li><%= product.distribution_centers.first.quantity %></li>
-        <% else %>
-          <li>You have no distribution centers for this product. <%= link_to "Create", new_distribution_center_path %> one!</li>
+        <% dc.product_distribution_centers.each do |pdc| %>
+          <li><%= "#{Product.find(pdc.product_id).name} - Qty: #{pdc.quantity}"  %></li>
         <% end %>
       </ul>
+      <% else %>
+        <p>You have no products in this distribution center. <%= link_to "Link", stock_product_path %> one!</p>
+      <% end %>
     <% end %>
+
+  <% else %>
+    <li>You have no distribution centers. <%= link_to "Create", new_distribution_center_path %> one!</li>
   <% end %>

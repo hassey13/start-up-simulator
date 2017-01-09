@@ -18,4 +18,6 @@ Rails.application.routes.draw do
   delete '/users', to: 'users#destroy', as: 'delete_user'
   delete '/personas', to: 'personas#destroy', as: 'delete_persona'
 
+  post '/distribution_centers/:id', to: 'distribution_centers#stock_product', as: 'stock_product'
+
 end

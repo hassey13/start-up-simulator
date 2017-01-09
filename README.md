@@ -1,24 +1,21 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Start-up Simulator
 
-Things you may want to cover:
+A casual sim where you create a product and manage it through the development lifecycle.
 
-* Ruby version
+Current Features:
 
-* System dependencies
+* Create product
 
-* Configuration
+* Order Product
 
-* Database creation
+* Stock Product in Distribution Centers
 
-* Database initialization
+Plans for development:
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Markets
+   -Different areas have different interests and potential demand
+   -Market saturation tracking
+   -Product lifecycle
+   -Sales/ Marketing boosts
