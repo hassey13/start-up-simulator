@@ -20,4 +20,6 @@ Rails.application.routes.draw do
 
   post '/distribution_centers/:id', to: 'distribution_centers#stock_product', as: 'stock_product'
 
+  post '/game', to: 'game#advance_time', as: 'advance_time'
+
 end

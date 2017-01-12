@@ -18,7 +18,7 @@ class PersonasController < ApplicationController
 
     if !!params[:persona_login]
       ##Attempt login
-      @persona = Persona.find_by(name: params[:persona_login][:name])
+      @persona = current_user.personas.find {|p| p.name = params[:persona_login][:name] }
 
     else
       ##Attempt Registration

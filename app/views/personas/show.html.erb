@@ -1,41 +1,79 @@
-<p>Logged in as: <%= current_user.first_name %> <%= form_tag logout_path, method: :delete do %>
+<nav style="background-color: black; border: 1px solid black; height: 50px;">
+  <div class="login" style="float:left; color: white; margin-left: 25px;">
+    <p>Logged in as: <%= current_user.first_name %></p>
+  </div>
+  <div class="logout" style="float:left; margin-left: 25px; margin-top: 15px;">
+    <%= form_tag logout_path, method: :delete do %>
       <%= submit_tag "Logout" %>
-    <% end %></p>
+    <% end %>
+  </div>
+</nav>
 
 <% if flash[:notice] %>
-  <div class="flash">
-    <p><%= flash[:notice] %></p>
+  <div class="flash" style="clear: both; height: 50px; background-color: red; margin: 0 auto;; margin-top: 20px; text-align: center; width: 600px;">
+    <h3><%= flash[:notice] %></h3>
   </div>
 <% end %>
 
-<h1>Hello <%= @persona.name %>!</h1>
-<h3>Money: $<%= number_with_delimiter(current_persona.money, :delimiter => ',')%></h3>
+<div class="persona-info" style="clear:both; margin-left: 500px;">
 
-<%= form_tag(logout_persona_path, method: 'DELETE') do %>
-  <%= submit_tag 'Persona Sign out' %>
-<% end %>
+    <div style="float:left;">
+      <h1>Hello <%= current_persona.name %>!</h1>
+      <h3>Money: $<%= number_with_delimiter(current_persona.money, :delimiter => ',')%></h3>
+    </div>
 
-<br>
+    <div style="float:left; margin-left: 50px; margin-top: 35px;">
 
-<%= form_tag(delete_persona_path, method: 'DELETE') do %>
-  <%= submit_tag 'Delete Persona' %>
-<% end %>
+    <%= form_tag(logout_persona_path, method: 'DELETE') do %>
+      <%= submit_tag 'Persona Sign out' %>
+    <% end %>
 
-<br>
+    <br>
+
+    <%= form_tag(delete_persona_path, method: 'DELETE') do %>
+      <%= submit_tag 'Delete Persona' %>
+    <% end %>
+
+  </div>
+
+  <div style="float:left; margin-left: 50px;">
+    <h1>Day <%= current_persona.game_time %></h1>
+
+    <%= form_tag advance_time_path do %>
+      <%= submit_tag "Advance Time" %>
+    <% end %>
+
+  </div>
+
+  <div style="float:left; margin-left: 50px; width: 250px; text-align: center;">
+    <h3>Game Explanation</h3>
+    <p>The goal is to generate profits through creating products, ordering them from factories, and selling them.  The game has limited functionality at the present, but feel free to poke around.</p>
+
+  </div>
+
+</div>
+
+<div style="clear:both;"></div>
+
+<br><br>
+
+<div style="float:left; margin-left: 50px; border: 1px solid black; padding: 10px;">
 
 <h3>Products</h3>
-  <% if @persona.products.count > 0 %>
-    <% @persona.products.each do |product| %>
-    <p><%= product.name %> - Cost: $<%= (product.sell_price)/4 %></p>
+  <% if current_persona.products.count > 0 %>
+    <% current_persona.products.each do |product| %>
+    <p><%= product.name %> - Cost: $<%= (product.sell_price)/4%></p>
     <% end %>
   <% end %>
 
 <%= link_to 'Create Product', new_product_path %>
 
-<br><br>
+</div>
+
+<div style="float:left; margin-left: 50px; border: 1px solid black; padding: 10px;">
 
 <h3>Place Order</h3>
-  <%= form_tag '/orders/new', method: :post, class: "navbar-form navbar-left search-form" do %>
+  <%= form_tag '/orders' do %>
     <%= label_tag 'Select Product' %>
     <br>
     <%=  select("order", "name", current_persona.products.collect {|p| p.name}, {include_blank: true}) %>
@@ -49,20 +87,25 @@
     <%=  select("order", "factory", current_persona.factories.collect {|f| f.name if f.availability}.compact, {include_blank: false}) %>
     <br><br>
     <%= submit_tag 'Place order' %>
-
   <% end %>
+</div>
+
+<div style="float:left; margin-left: 50px; border: 1px solid black; padding: 10px;">
 
 <h3>Available Factories</h3>
   <%= link_to "Unlock Factories", new_factory_path %>
   <ul>
-    <% @persona.factories.each do |factory| %>
+    <% current_persona.factories.each do |factory| %>
         <%  if factory.availability %>
           <p><%= link_to factory.name, factory %></p>
         <% end %>
     <% end %>
   </ul>
+</div>
 
-<h3>Current Stock</h3>
+<div style="float:left; margin-left: 50px; border: 1px solid black; padding: 10px;">
+
+  <h3>Current Stock</h3>
 
   <% unless current_persona.distribution_centers.blank? %>
     <% current_persona.distribution_centers.each do |dc| %>
@@ -81,3 +124,38 @@
   <% else %>
     <li>You have no distribution centers. <%= link_to "Create", new_distribution_center_path %> one!</li>
   <% end %>
+
+</div>
+
+<div style="float:left; margin-left: 50px; border: 1px solid black; padding: 10px;">
+
+  <h3>Production Queue</h3>
+
+  <% current_persona.products.where(active: true).each do |product_production| %>
+
+    <% product_production.orders.where(complete: false).each do |order| %>
+
+      <ul>
+        <li><%= order.factory.name %></li>
+        <li><%= order.product.name %></li>
+        <li>Qty: <%= order.quantity %></li>
+        <li>Available On: Day <%= order.order_date + 60 %></li>
+      </ul>
+
+    <% end  %>
+  <% end  %>
+
+
+</div>
+
+<div style="float:left; margin-left: 50px; border: 1px solid black; padding: 10px;">
+  <h3>Sales Channels</h3>
+  <p>Current Status: Word of mouth</p>
+  <% if current_persona.products.count > 0 %>
+    <% current_persona.products.each do |product| %>
+    <p><%= product.name %> - Demand: <%= product.demand %> units per month</p>
+    <% end %>
+  <% end %>
+
+    <br><br>
+</div>

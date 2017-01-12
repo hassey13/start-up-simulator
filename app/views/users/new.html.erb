@@ -15,6 +15,17 @@
   </div>
 <% end %>
 
+<br>
+<h1>Notice: This game is in development and is now in a working build. Enjoy!</h1>
+<ul>Various Improvements Coming: <br><br>
+  <li>Additional product support (current only supports 1 product per persona)</li>
+  <li>Additional Sales/ Marketing functionality to control demand</li>
+  <li>Product categories with initial demand implicatations</li>
+  <li>R & D division</li>
+  <li>New Factory options with working stats</li>
+  <li>Additional Distribution Center Features</li>
+</ul>
+<br>
 <h1>Create an account:</h1>
 
 <%= form_for @user do |f| %>
@@ -25,11 +36,11 @@
   <br><br>
   <%= f.label :password %>
   <br>
-  <%= f.text_field :password %>
+  <%= f.password_field :password %>
   <br><br>
   <%= f.label :password_confirmation %>
   <br>
-  <%= f.text_field :password_confirmation %>
+  <%= f.password_field :password_confirmation %>
   <br><br>
   <%= f.label :first_name %>
   <br>
@@ -55,7 +66,7 @@
 <br><br>
 <%= label_tag 'Password' %>
 <br>
-<%= text_field_tag :password %>
+<%= password_field_tag :password %>
 <br><br>
 <%= submit_tag 'Log in' %>
 <% end %>

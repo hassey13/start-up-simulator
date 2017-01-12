@@ -9,7 +9,7 @@ class Factory < ApplicationRecord
     factories = [
       {
       name: "JYEF",
-      production_rating: 1,
+      production_rating: 60,
       quality_rating: 1,
       cost_rating: 1,
       cost: 0,
@@ -18,7 +18,7 @@ class Factory < ApplicationRecord
       },
       {
       name: "Speedy Manufacturing",
-      production_rating: 1.25,
+      production_rating: 60,
       quality_rating: 0.75,
       cost_rating: 1.10,
       cost: 100,
@@ -27,7 +27,7 @@ class Factory < ApplicationRecord
       },
       {
       name: "BQ Manufacturing",
-      production_rating: 1,
+      production_rating: 60,
       quality_rating: 1.50,
       cost_rating: 1.25,
       cost: 100,
@@ -36,7 +36,7 @@ class Factory < ApplicationRecord
       },
       {
       name: "Cheep Manufacturing",
-      production_rating: 1,
+      production_rating: 60,
       quality_rating: 0.50,
       cost_rating: 0.75,
       cost: 100,
@@ -45,7 +45,7 @@ class Factory < ApplicationRecord
       },
       {
       name: "Premier Manufacturing",
-      production_rating: 1.5,
+      production_rating: 60,
       quality_rating: 1.25,
       cost_rating: 0.75,
       cost: 100,
